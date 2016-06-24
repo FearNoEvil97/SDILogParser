@@ -8,11 +8,8 @@ package sdilogparser;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -22,6 +19,7 @@ import java.util.Scanner;
  */
 public class SDILogParser {
 //Vars
+
     public static String user = "jhutchins";
     public static String password = "F1shing@Sea";
     public static String host = "192.168.1.3";
@@ -48,15 +46,29 @@ public class SDILogParser {
 
             Scanner scan = new Scanner(out);
             PrintWriter writer = new PrintWriter(urlFile);
+            writer.println("URL, Category");
 
-            String newDat = "";
+            String newNme = "";
+            String newCat = "";
             String needed = "dstname=";
+            String needed2 = "Category=\"Not";
+            String needed3 = "Category=\"Not Rated\"";
 
             while (scan.hasNext()) {
-                newDat = scan.next();
-                if (newDat.contains(needed)) {
-                    newDat = newDat.substring(8);
-                    writer.println(newDat);
+                newNme = newCat;
+                if (newNme.contains(needed)) {
+                    newNme = newNme.substring(8);
+                    while (scan.hasNext()) {
+                        newCat = scan.next();
+                        if (newCat.contains(needed2) || newCat.contains(needed3)) {
+                            writer.print(newNme + "," + newCat + "\n");
+                        }
+                        if (newCat.contains(needed)){
+                            break;
+                        }
+                    }
+                }else{
+                    newCat = scan.next();
                 }
             }
         } catch (Exception e) {
