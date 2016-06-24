@@ -51,24 +51,20 @@ public class SDILogParser {
             String newNme = "";
             String newCat = "";
             String needed = "dstname=";
-            String needed2 = "Category=\"Not";
+            String needed2 = "Category=\"";
             String needed3 = "Category=\"Not Rated\"";
 
             while (scan.hasNext()) {
-                newNme = newCat;
-                if (newNme.contains(needed)) {
+                newNme = scan.next();
+                if (newNme.contains(needed)){
                     newNme = newNme.substring(8);
-                    while (scan.hasNext()) {
+                    newCat = scan.findInLine(needed2);
+                    if(newCat.contains(needed2)){
+                        scan.useDelimiter("\"");
                         newCat = scan.next();
-                        if (newCat.contains(needed2) || newCat.contains(needed3)) {
-                            writer.print(newNme + "," + newCat + "\n");
-                        }
-                        if (newCat.contains(needed)){
-                            break;
-                        }
+                        writer.print(newNme + "," + newCat + "\n");
+                        scan.useDelimiter(" ");
                     }
-                }else{
-                    newCat = scan.next();
                 }
             }
         } catch (Exception e) {
