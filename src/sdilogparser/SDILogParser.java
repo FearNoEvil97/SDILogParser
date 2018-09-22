@@ -21,7 +21,7 @@ public class SDILogParser {
 //Vars
 
     public static String user = "jhutchins";
-    public static String password = "F1shing@Sea";
+    public static String password = "password";
     public static String host = "192.168.1.3";
     public static int port = 22;
     public static JSch jsch = new JSch();
